@@ -82,7 +82,7 @@ Investigate failed and successful Windows logon events in Microsoft Sentinel usi
 
 **Evidence**
 
-![Microsoft Sentinel Windows failed and successful login investigation](./image%2820261021-134717%29.png)
+<img src="./image%2820261021-134717%29.png" alt="Microsoft Sentinel Windows login investigation" width="800">
 **Analysis**
 
 The combination of repeated failed attempts and successful logons from the same IP warrants further investigation. The available evidence does not establish whether the successful logons were authorised or whether the account was compromised.
