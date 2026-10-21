@@ -81,6 +81,7 @@ Investigate failed and successful Windows logon events in Microsoft Sentinel usi
 - Successful logon events (Event ID 4624) were also recorded from the same IP address, including Logon Types 3 and 10.
 
 **Evidence**
+
 ![Microsoft Sentinel Windows failed and successful login investigation](./image%2820261021-134717%29.png)
 **Analysis**
 
