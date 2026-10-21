@@ -92,3 +92,17 @@ The combination of repeated failed attempts and successful logons from the same 
 - Escalate or contain the activity according to the organisation's incident response procedures if malicious activity is confirmed.
 
 *This is a hands-on learning lab. Findings are based on observed lab logs and require further validation.*
+
+**Additional Investigation**
+
+- Correlated failed logon events (Event ID 4625) with successful logon events (Event ID 4624) from the same source IP, `117.20.68.46`.
+- Identified explicit-credential events (Event ID 4648) and process-creation events (Event ID 4688).
+- Observed `svchost.exe`, `winlogon.exe` and `wininit.exe` in the event results.
+- The available evidence does not confirm whether the successful logons were authorised or whether the account was compromised.
+- A query for process command-line details failed because `ProcessCommandLine` was not available in the current `SecurityEvent` schema.
+
+**Conclusion**
+
+The combination of repeated failed logons and successful logons from the same source IP warrants further investigation. Validate the source IP, confirm whether the logons were expected, and review additional authentication and endpoint evidence before determining whether the activity is malicious.
+
+*This is a hands-on learning lab based on observed logs. Findings are limited to the available evidence.*
