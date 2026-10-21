@@ -65,3 +65,30 @@ The displayed logs contain repeated failed SSH password attempts involving diffe
 - Consider blocking confirmed malicious sources through the appropriate security controls.
 
 *This is a learning lab. Conclusions should be based on the observed logs and further validation.*
+
+
+### Windows Failed and Successful Login Investigation
+
+**Objective**
+
+Investigate failed and successful Windows logon events in Microsoft Sentinel using Kusto Query Language (KQL).
+
+**Findings**
+
+- Identified nine failed logon events (Event ID 4625) from source IP `117.20.68.46` targeting `windows-vm`.
+- The failed attempts involved the account `MicrosoftAccount\cybercxel`.
+- The failure status and substatus indicate invalid logon credentials and an incorrect password.
+- Successful logon events (Event ID 4624) were also recorded from the same IP address, including Logon Types 3 and 10.
+
+**Analysis**
+
+The combination of repeated failed attempts and successful logons from the same IP warrants further investigation. The available evidence does not establish whether the successful logons were authorised or whether the account was compromised.
+
+**Recommended next steps**
+
+- Verify whether the source IP and successful logons are expected.
+- Review the account, authentication details and event timeline.
+- Investigate related activity on the Windows VM.
+- Escalate or contain the activity according to the organisation's incident response procedures if malicious activity is confirmed.
+
+*This is a hands-on learning lab. Findings are based on observed lab logs and require further validation.*
