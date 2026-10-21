@@ -29,3 +29,9 @@ Findings and screenshots will be added after verifying the results from my lab.
 ## Disclaimer
 
 This is a hands-on learning project. All findings will be based on my own lab evidence and observations.
+
+## Lab Architecture
+
+The diagram below illustrates the lab's log collection and security monitoring flow.
+
+![Microsoft Sentinel SOC Homelab Architecture](Microsoft%20Sentinel%20SOC%20Homelab%20Architecture-1.png)
