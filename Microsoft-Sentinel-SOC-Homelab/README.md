@@ -54,7 +54,7 @@ Syslog
 ### Evidence
 
 !![Microsoft Sentinel SSH failed login investigation](./Linux-Brute%20force.png)
-S
+
 ### Analysis
 The displayed logs contain repeated failed SSH password attempts involving different usernames, including `root`. These events can be indicators of password guessing or brute-force activity and require further investigation.
 
