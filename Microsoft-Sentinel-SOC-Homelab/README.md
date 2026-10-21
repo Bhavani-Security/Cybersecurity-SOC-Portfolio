@@ -35,3 +35,33 @@ This is a hands-on learning project. All findings will be based on my own lab ev
 The diagram below illustrates the lab's log collection and security monitoring flow.
 
 ![Microsoft Sentinel SOC Homelab Architecture](Microsoft%20Sentinel%20SOC%20Homelab%20Architecture-1.png)
+
+
+## SSH Failed Login Investigation
+
+### Objective
+Investigate failed SSH login attempts recorded in Linux Syslog using Kusto Query Language (KQL).
+
+### Query
+```kusto
+Syslog
+| where TimeGenerated > ago(24h)
+| where SyslogMessage contains "Failed password"
+| project TimeGenerated, Computer, HostIP, SyslogMessage
+| order by TimeGenerated desc
+```
+
+### Evidence
+
+![Microsoft Sentinel SSH failed login investigation](Linux Bruteforce.png)
+S
+### Analysis
+The displayed logs contain repeated failed SSH password attempts involving different usernames, including `root`. These events can be indicators of password guessing or brute-force activity and require further investigation.
+
+### Recommended next steps
+- Group failed attempts by source IP and time window.
+- Check whether any successful SSH logins followed the failures.
+- Review the source IPs and authentication history for suspicious activity.
+- Consider blocking confirmed malicious sources through the appropriate security controls.
+
+*This is a learning lab. Conclusions should be based on the observed logs and further validation.*
