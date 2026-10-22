@@ -66,6 +66,14 @@ I configured and verified log collection in my Log Analytics workspace to suppor
 - Verified that Azure Activity Logs were available for querying.
 - Explored Azure control-plane activities, including resource and configuration changes.
 
+
+#### Evidence
+
+The Azure Activity Log shows control-plane operations performed during the lab setup, including virtual machine operations, deployments, and data collection rule changes.
+
+![Azure Activity Logs](azure-activity-logs.png)
+
+
 ### Azure Resource Logs
 - Configured diagnostic settings for relevant resources.
 - Verified that resource logs were arriving in the configured destination.
