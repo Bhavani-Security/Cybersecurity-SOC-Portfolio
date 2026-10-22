@@ -126,6 +126,14 @@ Learned how to collect and analyse logs from different operating systems, use Mi
 
 I explored how Microsoft Sentinel analytic rules can identify potentially suspicious activity from collected security logs.
 
+
+### Active Analytic Rules — Evidence
+
+The Sentinel Analytics page shows two enabled analytic rules: RDP Brute Force and SSH Brute Force. Both are configured with Low severity.
+
+![Microsoft Sentinel active analytic rules](sentinel-active-analytic-rules.png)
+
+
 ### 1. RDP Failed Login Attempts
 - Objective: Identify repeated failed Remote Desktop Protocol (RDP) login attempts.
 - Data source: Windows security events, where available.
