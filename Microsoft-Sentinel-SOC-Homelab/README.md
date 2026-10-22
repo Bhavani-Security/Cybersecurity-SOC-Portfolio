@@ -24,7 +24,6 @@ The lab focuses on collecting Windows and Linux security logs, investigating aut
 
 ## Investigation Results
 
-Findings and screenshots will be added after verifying the results from my lab.
 
 ## Disclaimer
 
