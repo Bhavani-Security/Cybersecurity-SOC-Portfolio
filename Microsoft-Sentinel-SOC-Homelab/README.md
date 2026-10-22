@@ -51,6 +51,13 @@ I built my cybersecurity lab from scratch in Microsoft Azure.
 - Installed Azure Monitor Agent on Windows and Linux.
 
 
+### Azure Resources
+
+The Azure resource group contains the infrastructure used for this lab, including the virtual network, network security group, virtual machines, Log Analytics workspace, and data collection rules.
+
+![Azure infrastructure resources](azure-infrastructure.png)
+
+
 ## Log Collection and Verification
 
 I configured and verified log collection in my Log Analytics workspace to support security monitoring and investigation.
