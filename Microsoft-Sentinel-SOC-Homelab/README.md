@@ -37,6 +37,39 @@ The diagram below illustrates the lab's log collection and security monitoring f
 ![Microsoft Sentinel SOC Homelab Architecture](Microsoft%20Sentinel%20SOC%20Homelab%20Architecture-1.png)
 
 
+## Azure Infrastructure Setup
+
+I built my cybersecurity lab from scratch in Microsoft Azure.
+
+### Resources Created
+- Created an Azure Resource Group to organise lab resources.
+- Built a Virtual Network and subnet.
+- Configured Network Security Group (NSG) rules.
+- Deployed a Windows 11 virtual machine.
+- Deployed an Ubuntu Linux virtual machine.
+- Created a Log Analytics workspace.
+- Installed Azure Monitor Agent on Windows and Linux.
+
+
+## Log Collection and Verification
+
+I configured and verified log collection in my Log Analytics workspace to support security monitoring and investigation.
+
+### Azure Activity Logs
+- Verified that Azure Activity Logs were available for querying.
+- Explored Azure control-plane activities, including resource and configuration changes.
+
+### Azure Resource Logs
+- Configured diagnostic settings for relevant resources.
+- Verified that resource logs were arriving in the configured destination.
+
+### Microsoft Entra ID Sign-in Logs
+- Verified that sign-in logs were available for querying.
+- Explored sign-in activity to understand identity and authentication risks.
+
+### Key Learning
+Different log sources provide different insights. Azure Activity Logs help monitor management operations, resource logs provide service-specific information, and Entra ID sign-in logs support identity investigations.
+
 ## SSH Failed Login Investigation
 
 ### Objective
