@@ -70,6 +70,51 @@ I configured and verified log collection in my Log Analytics workspace to suppor
 ### Key Learning
 Different log sources provide different insights. Azure Activity Logs help monitor management operations, resource logs provide service-specific information, and Entra ID sign-in logs support identity investigations.
 
+
+## Microsoft Defender and Sentinel Configuration
+
+### Microsoft Defender
+- Accessed the Microsoft Defender portal and explored its security monitoring capabilities.
+- Verified the Windows and Linux lab environments as part of the security monitoring setup.
+
+### Microsoft Sentinel
+- Enabled Microsoft Sentinel for the Log Analytics workspace.
+- Explored the Sentinel dashboard and workspace features.
+- Configured and explored data connectors.
+- Queried collected security logs using Kusto Query Language (KQL).
+
+### Windows and Linux Monitoring
+- Configured and verified log collection from both Windows and Ubuntu Linux virtual machines.
+- Explored Windows security events and Linux Syslog entries.
+- Investigated authentication activity to identify suspicious login patterns.
+
+### Key Learning
+Learned how to collect and analyse logs from different operating systems, use Microsoft Sentinel for security monitoring, and investigate authentication activity using KQL.
+
+
+## Microsoft Sentinel Analytic Rules
+
+I explored how Microsoft Sentinel analytic rules can identify potentially suspicious activity from collected security logs.
+
+### 1. RDP Failed Login Attempts
+- Objective: Identify repeated failed Remote Desktop Protocol (RDP) login attempts.
+- Data source: Windows security events, where available.
+- Detection approach: Analyse failed login events, source IP addresses, targeted accounts, and event frequency.
+- Investigation: Review the results to determine whether the activity requires further investigation.
+
+### 2. Microsoft Entra ID Sign-in Monitoring
+- Objective: Monitor identity sign-in activity.
+- Data source: Microsoft Entra ID sign-in logs.
+- Detection approach: Examine failed sign-ins, unfamiliar locations, and unusual authentication patterns where the required data is available.
+
+### 3. Impossible Travel
+- Objective: Identify sign-ins from geographically distant locations within a time interval that may be inconsistent with normal travel.
+- Data source: Microsoft Entra ID sign-in data.
+- Detection approach: Review location and timestamp information to identify potentially suspicious sign-in patterns.
+- Investigation: Validate the events and consider VPN usage, proxy services, and other explanations before concluding that an account is compromised.
+
+
+
 ## SSH Failed Login Investigation
 
 ### Objective
