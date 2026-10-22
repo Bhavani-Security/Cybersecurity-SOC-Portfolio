@@ -90,6 +90,14 @@ Queried the Log Analytics workspace to identify tables containing recent events.
 - Verified that sign-in logs were available for querying.
 - Explored sign-in activity to understand identity and authentication risks.
 
+  
+#### Evidence
+
+Queried Microsoft Entra ID sign-in logs to review recent authentication activity. The displayed records include successful sign-ins, identified by a ResultType of 0.
+
+![Microsoft Entra ID sign-in logs](entra-signin-logs.png)
+
+
 ### Key Learning
 Different log sources provide different insights. Azure Activity Logs help monitor management operations, resource logs provide service-specific information, and Entra ID sign-in logs support identity investigations.
 
