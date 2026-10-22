@@ -78,6 +78,14 @@ The Azure Activity Log shows control-plane operations performed during the lab s
 - Configured diagnostic settings for relevant resources.
 - Verified that resource logs were arriving in the configured destination.
 
+  
+#### Log Analytics Table Verification
+
+Queried the Log Analytics workspace to identify tables containing recent events. The results included Azure activity, diagnostic, Windows security, Linux Syslog, and sign-in log tables.
+
+![Log Analytics table ingestion verification](log-analytics-table-ingestion.png)
+
+
 ### Microsoft Entra ID Sign-in Logs
 - Verified that sign-in logs were available for querying.
 - Explored sign-in activity to understand identity and authentication risks.
