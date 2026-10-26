@@ -274,6 +274,7 @@ SecurityEvent
           Account, IpAddress, LogonType, Activity
 | order by TimeGenerated desc
 
+
 **Findings**
 
 - Identified 106 failed Windows logon events (Event ID 4625) targeting windows-vm over seven days.
@@ -285,9 +286,11 @@ SecurityEvent
 - Additional events included explicit-credential use (Event ID 4648) and process creation (Event ID 4688).
 - Observed Windows processes included `svchost.exe`, `winlogon.exe` and `wininit.exe`.
 
+
 **Analysis**
 
 The repeated failed logon events indicate potential password-guessing activity. Successful logons were also recorded in the investigation results, so the authentication timeline requires further review. These findings alone do not confirm unauthorised access or account compromise.
+
 
 **Recommended Next Steps**
 
@@ -297,13 +300,16 @@ The repeated failed logon events indicate potential password-guessing activity. 
 - Confirm whether process command-line logging is enabled and available.
 - Escalate or contain the activity according to incident response procedures if malicious activity is confirmed.
 
+
 **MITRE ATT&CK Mapping**
 
 - **T1110 — Brute Force:** Relevant when investigating repeated authentication failures.
 - **T1078 — Valid Accounts:** Relevant when investigating possible misuse of legitimate accounts.
 
+
 These mappings describe investigation context; the available events do not confirm that either technique occurred.
 ## Investigation Approach and Lessons Learned
+
 
 ### Security Investigation Workflow
 
@@ -313,6 +319,7 @@ These mappings describe investigation context; the available events do not confi
 - **Incident assessment:** Reviewed available alerts and investigated repeated authentication failures without assuming every failure was malicious.
 - **Investigation documentation:** Recorded the query logic, observed findings, limitations and recommended follow-up actions.
 
+
 ### Key Lessons Learned
 
 - A high number of failed logons is a signal to investigate, not proof of an attack.
@@ -320,6 +327,7 @@ These mappings describe investigation context; the available events do not confi
 - Successful sign-ins should be correlated with timestamps, source IPs, account activity and available alerts.
 - Detection queries must be tested against actual telemetry; a configured rule does not guarantee that an alert will trigger.
 - Troubleshooting log ingestion requires checking each stage, from the data source through collection and workspace ingestion.
+
 
 ### Project Outcome
 
