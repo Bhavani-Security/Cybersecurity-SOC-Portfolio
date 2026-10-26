@@ -14,6 +14,13 @@ The lab focuses on collecting Windows and Linux security logs, investigating aut
 - Log Analytics workspace
 - Microsoft Sentinel
 
+  
+## Lab Architecture
+
+The diagram below illustrates the lab's log collection and security monitoring flow.
+
+![Microsoft Sentinel SOC Homelab Architecture](Microsoft%20Sentinel%20SOC%20Homelab%20Architecture-1.png)
+
 ## Project Objectives
 
 - Understand how security logs are collected and stored.
@@ -33,18 +40,7 @@ The following investigations were performed using Microsoft Sentinel and Log Ana
 
 **Outcome:** Practised KQL queries, security log analysis, detection-rule configuration, and incident investigation.
 
-*This is a learning lab. Findings are based on the available telemetry and require further validation.*
 
-
-## Disclaimer
-
-This is a hands-on learning project. All findings will be based on my own lab evidence and observations.
-
-## Lab Architecture
-
-The diagram below illustrates the lab's log collection and security monitoring flow.
-
-![Microsoft Sentinel SOC Homelab Architecture](Microsoft%20Sentinel%20SOC%20Homelab%20Architecture-1.png)
 
 
 ## Azure Infrastructure Setup
@@ -96,21 +92,6 @@ Queried the Log Analytics workspace to identify tables containing recent events.
 ![Log Analytics table ingestion verification](log-analytics-table-ingestion.png)
 
 
-### Microsoft Entra ID Sign-in Logs
-- Verified that sign-in logs were available for querying.
-- Explored sign-in activity to understand identity and authentication risks.
-
-  
-#### Evidence
-
-Queried Microsoft Entra ID sign-in logs to review recent authentication activity. The displayed records include successful sign-ins, identified by a ResultType of 0.
-
-![Microsoft Entra ID sign-in logs](entra-signin-logs.png)
-
-
-### Key Learning
-Different log sources provide different insights. Azure Activity Logs help monitor management operations, resource logs provide service-specific information, and Entra ID sign-in logs support identity investigations.
-
 
 ## Microsoft Defender and Sentinel Configuration
 
@@ -123,14 +104,6 @@ Different log sources provide different insights. Azure Activity Logs help monit
 - Explored the Sentinel dashboard and workspace features.
 - Configured and explored data connectors.
 - Queried collected security logs using Kusto Query Language (KQL).
-
-### Windows and Linux Monitoring
-- Configured and verified log collection from both Windows and Ubuntu Linux virtual machines.
-- Explored Windows security events and Linux Syslog entries.
-- Investigated authentication activity to identify suspicious login patterns.
-
-### Key Learning
-Learned how to collect and analyse logs from different operating systems, use Microsoft Sentinel for security monitoring, and investigate authentication activity using KQL.
 
 
 ## Microsoft Sentinel Analytic Rules
@@ -152,11 +125,6 @@ The Sentinel Analytics page shows two enabled analytic rules: RDP Brute Force an
 - Investigation: Review the results to determine whether the activity requires further investigation.
 
 ### 2. Microsoft Entra ID Sign-in Monitoring
-- Objective: Monitor identity sign-in activity.
-- Data source: Microsoft Entra ID sign-in logs.
-- Detection approach: Examine failed sign-ins, unfamiliar locations, and unusual authentication patterns where the required data is available.
-
-- ### Microsoft Entra ID — Sign-in Monitoring
 
 **Objective:** Monitor authentication activity and identify potentially suspicious sign-in patterns.
 
@@ -197,7 +165,6 @@ The query provides visibility into sign-in timestamps, user accounts, applicatio
 - Review related alerts and incidents in Microsoft Defender when available.
 - Validate suspicious activity before concluding that an account is compromised.
 
-*This is a hands-on learning lab. Findings are based on observed log data and require further validation.*
 
 ### 3. Impossible Travel Detection
 
@@ -263,13 +230,7 @@ SigninLogs
 
 **Result Status:** Detection logic documented. No confirmed impossible-travel incident is claimed.
 
-*This is a hands-on learning lab. Findings and potential alerts require validation against actual sign-in records.*
-
-- 
-
-
-
-## SSH Failed Login Investigation
+ ## SSH Failed Login Investigation
 
 ### Objective
 Investigate failed SSH login attempts recorded in Linux Syslog using Kusto Query Language (KQL).
@@ -296,51 +257,52 @@ The displayed logs contain repeated failed SSH password attempts involving diffe
 - Review the source IPs and authentication history for suspicious activity.
 - Consider blocking confirmed malicious sources through the appropriate security controls.
 
-*This is a learning lab. Conclusions should be based on the observed logs and further validation.*
-
-
 ### Windows Failed and Successful Login Investigation
 
 **Objective**
 
-Investigate failed and successful Windows logon events in Microsoft Sentinel using Kusto Query Language (KQL).
+Investigate failed and successful Windows logon events in Microsoft Sentinel using Kusto Query Language (KQL), including explicit-credential use and process-creation activity.
+
+**Query**
+
+```kusto
+SecurityEvent
+| where TimeGenerated > ago(7d)
+| where EventID in (4624, 4625, 4648, 4688)
+| where Computer contains "windows-vm"
+| project TimeGenerated, EventID, Computer,
+          Account, IpAddress, LogonType, Activity
+| order by TimeGenerated desc
 
 **Findings**
 
-- Identified nine failed logon events (Event ID 4625) from source IP `117.20.68.46` targeting `windows-vm`.
-- The failed attempts involved the account `MicrosoftAccount\cybercxel`.
-- The failure status and substatus indicate invalid logon credentials and an incorrect password.
-- Successful logon events (Event ID 4624) were also recorded from the same IP address, including Logon Types 3 and 10.
+- Identified 106 failed Windows logon events (Event ID 4625) targeting windows-vm over seven days.
+- The failed logon events involved the account or accounts recorded in Windows Security logs.
+- Failure status and substatus indicated invalid logon credentials or an incorrect password.
+- Successful logon events (Event ID 4624) included Logon Types 3 and 10.
+- Logon Type 3 represents a network logon.
+- Logon Type 10 represents a remote interactive logon, commonly associated with Remote Desktop Protocol (RDP).
+- Additional events included explicit-credential use (Event ID 4648) and process creation (Event ID 4688).
+- Observed Windows processes included `svchost.exe`, `winlogon.exe` and `wininit.exe`.
 
-**Evidence**
-
-<img src="./image%2820261021-134717%29.png" alt="Microsoft Sentinel Windows login investigation" width="800">
 **Analysis**
 
-The combination of repeated failed attempts and successful logons from the same IP warrants further investigation. The available evidence does not establish whether the successful logons were authorised or whether the account was compromised.
+The repeated failed logon events indicate potential password-guessing activity. Successful logons were also recorded in the investigation results, so the authentication timeline requires further review. These findings alone do not confirm unauthorised access or account compromise.
 
-**Recommended next steps**
+**Recommended Next Steps**
 
-- Verify whether the source IP and successful logons are expected.
-- Review the account, authentication details and event timeline.
+- Verify whether the source IP addresses and successful logons are expected.
+- Review the affected accounts and authentication timeline.
 - Investigate related activity on the Windows VM.
-- Escalate or contain the activity according to the organisation's incident response procedures if malicious activity is confirmed.
+- Confirm whether process command-line logging is enabled and available.
+- Escalate or contain the activity according to incident response procedures if malicious activity is confirmed.
 
-*This is a hands-on learning lab. Findings are based on observed lab logs and require further validation.*
+**MITRE ATT&CK Mapping**
 
-### Additional Investigation
+- **T1110 — Brute Force:** Relevant when investigating repeated authentication failures.
+- **T1078 — Valid Accounts:** Relevant when investigating possible misuse of legitimate accounts.
 
-- Correlated failed logons (Event ID 4625) with successful logons (Event ID 4624) from the same source IP, `117.20.68.46`.
-- Identified explicit-credential events (Event ID 4648) and process-creation events (Event ID 4688).
-- Observed Windows processes including `svchost.exe`, `winlogon.exe` and `wininit.exe`.
-- Process command-line details were unavailable through the query because `ProcessCommandLine` was not present in the current `SecurityEvent` schema.
-
-### Conclusion
-
-The combination of repeated failed logons and successful logons from the same source IP warrants further investigation. The available evidence does not confirm account compromise. Further validation of the source IP, authentication activity and endpoint logs would be required.
-
-*This is a hands-on learning lab based on observed logs. Findings are limited to the available evidence.*
-
+These mappings describe investigation context; the available events do not confirm that either technique occurred.
 ## Investigation Approach and Lessons Learned
 
 ### Security Investigation Workflow
@@ -363,4 +325,6 @@ The combination of repeated failed logons and successful logons from the same so
 
 This hands-on lab provided practical experience with Azure infrastructure, Microsoft Sentinel, Log Analytics, KQL-based investigation, analytics-rule configuration and security troubleshooting.
 
-*All findings are limited to the telemetry and tests available in this learning environment. No unverified attack or compromise is claimed.*
+## Disclaimer
+
+This is a hands-on learning project. All findings will be based on my own lab evidence and observations.
