@@ -23,6 +23,17 @@ The lab focuses on collecting Windows and Linux security logs, investigating aut
 - Document investigation steps and security recommendations.
 
 ## Investigation Results
+The following investigations were performed using Microsoft Sentinel and Log Analytics:
+
+- **Windows authentication:** Investigated failed logon events (Event ID 4625) and reviewed repeated failures.
+- **Linux SSH monitoring:** Queried Syslog data and reviewed related SSH security incidents.
+- **Azure activity monitoring:** Reviewed Azure Activity Logs for resource operations and configuration changes.
+- **Identity monitoring:** Queried Microsoft Entra ID sign-in logs to review authentication activity.
+- **Detection rules:** Configured Sentinel analytics rules for SSH brute-force activity and RDP failed logons. The RDP-specific query returned no matching results during testing.
+
+**Outcome:** Practised KQL queries, security log analysis, detection-rule configuration, and incident investigation.
+
+*This is a learning lab. Findings are based on the available telemetry and require further validation.*
 
 
 ## Disclaimer
