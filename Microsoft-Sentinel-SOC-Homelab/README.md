@@ -264,7 +264,7 @@ The displayed logs contain repeated failed SSH password attempts involving diffe
 Investigate failed and successful Windows logon events in Microsoft Sentinel using Kusto Query Language (KQL), including explicit-credential use and process-creation activity.
 
 **Query**
-
+```kusto
 SecurityEvent
 | where TimeGenerated > ago(7d)
 | where EventID in (4624, 4625, 4648, 4688)
