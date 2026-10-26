@@ -265,7 +265,7 @@ Investigate failed and successful Windows logon events in Microsoft Sentinel usi
 
 **Query**
 
-```kusto
+kusto
 SecurityEvent
 | where TimeGenerated > ago(7d)
 | where EventID in (4624, 4625, 4648, 4688)
