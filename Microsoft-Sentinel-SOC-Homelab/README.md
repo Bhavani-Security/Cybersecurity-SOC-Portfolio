@@ -199,11 +199,73 @@ The query provides visibility into sign-in timestamps, user accounts, applicatio
 
 *This is a hands-on learning lab. Findings are based on observed log data and require further validation.*
 
-### 3. Impossible Travel
-- Objective: Identify sign-ins from geographically distant locations within a time interval that may be inconsistent with normal travel.
-- Data source: Microsoft Entra ID sign-in data.
-- Detection approach: Review location and timestamp information to identify potentially suspicious sign-in patterns.
-- Investigation: Validate the events and consider VPN usage, proxy services, and other explanations before concluding that an account is compromised.
+### 3. Impossible Travel Detection
+
+**Objective:** Identify successful sign-ins from geographically distant locations within a short time period that may indicate compromised credentials.
+
+**Data Source:** Microsoft Entra ID sign-in logs (`SigninLogs`).
+
+**Detection Approach:** Compare consecutive successful sign-ins for the same user, reviewing location differences and timestamps to identify potentially suspicious activity.
+
+#### KQL Query
+
+```kusto
+// Identify consecutive successful sign-ins from different locations
+// within a short time window for the same user.
+SigninLogs
+| where TimeGenerated > ago(6h)
+| where ResultType == 0
+| project TimeGenerated, UserPrincipalName, IPAddress, Location
+| sort by UserPrincipalName asc, TimeGenerated asc
+| serialize
+| extend PrevLocation = prev(Location),
+         PrevTime = prev(TimeGenerated),
+         PrevUser = prev(UserPrincipalName)
+| where UserPrincipalName == PrevUser
+| where Location != PrevLocation
+| extend TimeDiffMinutes =
+    datetime_diff('minute', TimeGenerated, PrevTime)
+| where TimeDiffMinutes > 0 and TimeDiffMinutes < 60
+| where isnotempty(Location) and isnotempty(PrevLocation)
+| project UserPrincipalName,
+          FirstLocation = PrevLocation,
+          FirstTime = PrevTime,
+          SecondLocation = Location,
+          SecondTime = TimeGenerated,
+          MinutesBetween = TimeDiffMinutes,
+          IPAddress
+```
+
+#### Detection Logic
+
+- Review successful sign-ins (`ResultType == 0`).
+- Compare consecutive sign-ins for the same user.
+- Identify different recorded locations within 60 minutes.
+- Review the source IP addresses and timestamps for further investigation.
+
+#### MITRE ATT&CK Mapping
+
+- **T1078 — Valid Accounts:** Relevant when investigating suspected misuse of legitimate accounts. This query does not confirm that the technique occurred.
+
+#### Tuning and Limitations
+
+- A different recorded location within 60 minutes is only a preliminary indicator.
+- The query does not calculate geographical distance or actual travel speed.
+- VPNs, proxies, mobile networks and inaccurate geolocation can produce misleading results.
+- The query compares consecutive records and should be validated against the available sign-in data.
+
+#### Recommended Actions
+
+- Validate the source IP addresses and recorded locations.
+- Review related sign-in activity and available identity-risk alerts.
+- Consider legitimate explanations such as VPN usage.
+- Investigate further before concluding that an account is compromised.
+
+**Result Status:** Detection logic documented. No confirmed impossible-travel incident is claimed.
+
+*This is a hands-on learning lab. Findings and potential alerts require validation against actual sign-in records.*
+
+- 
 
 
 
