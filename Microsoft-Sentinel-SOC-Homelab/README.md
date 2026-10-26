@@ -273,6 +273,7 @@ SecurityEvent
           Account, IpAddress, LogonType, Activity
 | order by TimeGenerated desc
 
+```
 
 **Findings**
 
