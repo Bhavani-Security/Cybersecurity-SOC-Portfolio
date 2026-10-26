@@ -156,6 +156,49 @@ The Sentinel Analytics page shows two enabled analytic rules: RDP Brute Force an
 - Data source: Microsoft Entra ID sign-in logs.
 - Detection approach: Examine failed sign-ins, unfamiliar locations, and unusual authentication patterns where the required data is available.
 
+- ### Microsoft Entra ID — Sign-in Monitoring
+
+**Objective:** Monitor authentication activity and identify potentially suspicious sign-in patterns.
+
+**Data source:** Microsoft Entra ID sign-in logs (`SigninLogs`).
+
+**KQL Query**
+
+```kusto
+SigninLogs
+| where TimeGenerated > ago(7d)
+| project TimeGenerated,
+          UserPrincipalName,
+          AppDisplayName,
+          IPAddress,
+          ResultType,
+          ResultDescription
+| order by TimeGenerated desc
+```
+
+**Findings**
+
+- Retrieved sign-in records from the Log Analytics workspace.
+- Observed successful sign-ins where `ResultType == 0`.
+- Reviewed activity involving Azure Portal and Microsoft 365 Security and Compliance Center.
+
+**Analysis**
+
+The query provides visibility into sign-in timestamps, user accounts, applications, source IP addresses and authentication results. Successful authentication alone does not confirm whether activity is legitimate or suspicious.
+
+**MITRE ATT&CK**
+
+- **T1078 — Valid Accounts:** Relevant when investigating suspected misuse of legitimate accounts. The query alone does not establish this technique occurred.
+
+**Recommended Actions**
+
+- Review unfamiliar source IP addresses and unusual authentication patterns.
+- Investigate failed sign-ins and correlate them with successful sign-ins.
+- Review related alerts and incidents in Microsoft Defender when available.
+- Validate suspicious activity before concluding that an account is compromised.
+
+*This is a hands-on learning lab. Findings are based on observed log data and require further validation.*
+
 ### 3. Impossible Travel
 - Objective: Identify sign-ins from geographically distant locations within a time interval that may be inconsistent with normal travel.
 - Data source: Microsoft Entra ID sign-in data.
