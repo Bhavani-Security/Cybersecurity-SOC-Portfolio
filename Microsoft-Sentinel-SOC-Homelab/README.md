@@ -340,3 +340,27 @@ The combination of repeated failed attempts and successful logons from the same 
 The combination of repeated failed logons and successful logons from the same source IP warrants further investigation. The available evidence does not confirm account compromise. Further validation of the source IP, authentication activity and endpoint logs would be required.
 
 *This is a hands-on learning lab based on observed logs. Findings are limited to the available evidence.*
+
+## Investigation Approach and Lessons Learned
+
+### Security Investigation Workflow
+
+- **Log validation:** Confirmed that Windows, Linux, Azure Activity and Entra ID sign-in data were available for querying.
+- **Evidence-based investigation:** Used KQL to filter events, group failed logons and examine authentication activity.
+- **Detection development:** Configured Sentinel analytics rules for selected Windows and Linux authentication scenarios.
+- **Incident assessment:** Reviewed available alerts and investigated repeated authentication failures without assuming every failure was malicious.
+- **Investigation documentation:** Recorded the query logic, observed findings, limitations and recommended follow-up actions.
+
+### Key Lessons Learned
+
+- A high number of failed logons is a signal to investigate, not proof of an attack.
+- Event IDs and logon types must be interpreted correctly before identifying an attack technique.
+- Successful sign-ins should be correlated with timestamps, source IPs, account activity and available alerts.
+- Detection queries must be tested against actual telemetry; a configured rule does not guarantee that an alert will trigger.
+- Troubleshooting log ingestion requires checking each stage, from the data source through collection and workspace ingestion.
+
+### Project Outcome
+
+This hands-on lab provided practical experience with Azure infrastructure, Microsoft Sentinel, Log Analytics, KQL-based investigation, analytics-rule configuration and security troubleshooting.
+
+*All findings are limited to the telemetry and tests available in this learning environment. No unverified attack or compromise is claimed.*
